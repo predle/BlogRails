@@ -3,7 +3,13 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.where(user_id: params[:user_id])
+
+    unless @posts # nil 일 경우
+      render json: "해당 User에대한 Comment 가 없습니다."
+      return
+    end
+    
     # 기본
       # render json: @posts
 
@@ -13,7 +19,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: @post, serializer: PostsSerializer
   end
 
   # POST /posts
@@ -21,7 +27,7 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
 
     if @post.save
-      render json: @post, status: :created, location: @post
+      render json: @post, serializer: PostsSerializer, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -52,7 +58,8 @@ class PostsController < ApplicationController
       # params.fetch(:post, {})
       params.permit(
         :title,
-        :content
+        :content,
+        :user_id
       )
     end
 end

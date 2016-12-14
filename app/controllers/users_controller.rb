@@ -4,13 +4,16 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-
-    render json: @users
+    unless @users # nil 일 경우
+      render json: "User 가 존재하지 않습니다."
+      return
+    end
+    render json: @users, each_serializer: UsersSerializer
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, serializer: UsersSerializer
   end
 
   # POST /users
@@ -18,7 +21,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, serializer: UsersSerializer, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -46,6 +49,9 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.fetch(:user, {})
+      # params.fetch(:user, {})
+      params.permit(
+        :email
+      )
     end
 end

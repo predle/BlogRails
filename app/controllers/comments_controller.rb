@@ -5,12 +5,17 @@ class CommentsController < ApplicationController
   def index
     @comments = Comment.all
 
-    render json: @comments
+    unless @comments # nil 일 경우
+      render json: "Comments 가 존재하지 않습니다."
+      return
+    end
+
+    render json: @comments, each_serializer: CommentsSerializer
   end
 
   # GET /comments/1
   def show
-    render json: @comment
+    render json: @comment, serializer: CommentsSerializer
   end
 
   # POST /comments
@@ -19,7 +24,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
 
     if @comment.save
-      render json: @posts, serializer: CommentsSerializer
+      render json: @comment, serializer: CommentsSerializer, status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
