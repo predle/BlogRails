@@ -9,3 +9,7 @@ Blog 예제
 # Serializer 추가
   1. gem 'active_model_serializers', '~> 0.10.0'
   2. config/initializers/ams.rb 파일 추가
+
+# Git 에서 특정파일 임시로 제외하기
+  git update-index --assume-unchanged {filename}
+  git update-index --no-assume-unchanged {filename}
