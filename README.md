@@ -5,3 +5,7 @@ Blog 예제
 3. rake db:create
 4. rake db:migrate
 5. rails s
+
+# Serializer 추가
+  1. gem 'active_model_serializers', '~> 0.10.0'
+  2. config/initializers/ams.rb 파일 추가

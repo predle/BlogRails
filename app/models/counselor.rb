@@ -1,2 +1,0 @@
-class Counselor < ApplicationRecord
-end

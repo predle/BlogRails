@@ -4,8 +4,11 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     @posts = Post.all
+    # 기본
+      # render json: @posts
 
-    render json: @posts
+    # {{JSON:API}} 사용
+    render json: @posts, each_serializer: PostsSerializer
   end
 
   # GET /posts/1
@@ -46,6 +49,10 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.fetch(:post, {})
+      # params.fetch(:post, {})
+      params.permit(
+        :title,
+        :content
+      )
     end
 end
